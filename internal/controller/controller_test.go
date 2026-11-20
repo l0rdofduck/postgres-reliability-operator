@@ -7,8 +7,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	dbv1 "github.com/lordofduckkk/postgres-reliability-operator/api/v1"
-	"github.com/lordofduckkk/postgres-reliability-operator/internal/patroni"
+	dbv1 "github.com/l0rdofduck/postgres-reliability-operator/api/v1"
+	"github.com/l0rdofduck/postgres-reliability-operator/internal/patroni"
 )
 
 func testCluster() *dbv1.PostgresCluster {

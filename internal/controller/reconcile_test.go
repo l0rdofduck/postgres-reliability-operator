@@ -11,7 +11,7 @@ import (
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	dbv1 "github.com/lordofduckkk/postgres-reliability-operator/api/v1"
+	dbv1 "github.com/l0rdofduck/postgres-reliability-operator/api/v1"
 )
 
 func testScheme(t *testing.T) *runtime.Scheme {

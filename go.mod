@@ -1,4 +1,4 @@
-module github.com/lordofduckkk/postgres-reliability-operator
+module github.com/l0rdofduck/postgres-reliability-operator
 
 go 1.24.0
 

@@ -12,8 +12,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
-	dbv1 "github.com/lordofduckkk/postgres-reliability-operator/api/v1"
-	"github.com/lordofduckkk/postgres-reliability-operator/internal/controller"
+	dbv1 "github.com/l0rdofduck/postgres-reliability-operator/api/v1"
+	"github.com/l0rdofduck/postgres-reliability-operator/internal/controller"
 )
 
 var scheme = runtime.NewScheme()

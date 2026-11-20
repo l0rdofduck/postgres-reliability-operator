@@ -12,7 +12,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
-	dbv1 "github.com/lordofduckkk/postgres-reliability-operator/api/v1"
+	dbv1 "github.com/l0rdofduck/postgres-reliability-operator/api/v1"
 )
 
 const (

@@ -1,0 +1,6 @@
+bin/
+*.out
+coverage.txt
+.idea/
+.vscode/
+kind-*.yaml

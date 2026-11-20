@@ -1,0 +1,113 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 1,
+  "panels": [
+    {
+      "title": "Leader healthy",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "pgc_leader_is_healthy{cluster=\"$cluster\"}",
+          "legendFormat": "{{namespace}}/{{cluster}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bool",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "green", "value": 1 }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "title": "Replicas in sync",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "expr": "pgc_replicas_in_sync{cluster=\"$cluster\"}",
+          "legendFormat": "{{namespace}}/{{cluster}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 1 },
+              { "color": "green", "value": 2 }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "title": "Last observed failover",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        {
+          "expr": "pgc_failover_duration_seconds{cluster=\"$cluster\"}",
+          "legendFormat": "{{namespace}}/{{cluster}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 30 }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "title": "Leader availability",
+      "type": "timeseries",
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 6 },
+      "targets": [
+        {
+          "expr": "avg_over_time(pgc_leader_is_healthy{cluster=\"$cluster\"}[5m])",
+          "legendFormat": "{{namespace}}/{{cluster}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "percentunit", "min": 0, "max": 1 },
+        "overrides": []
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["postgres", "patroni", "pgc"],
+  "templating": {
+    "list": [
+      {
+        "name": "cluster",
+        "label": "Cluster",
+        "type": "query",
+        "query": "label_values(pgc_leader_is_healthy, cluster)",
+        "includeAll": false,
+        "multi": false
+      }
+    ]
+  },
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "PostgreSQL Reliability Operator",
+  "uid": "pgc-overview",
+  "version": 1
+}

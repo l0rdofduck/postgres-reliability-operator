@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pgc-demo
+---
+apiVersion: db.example.com/v1
+kind: PostgresCluster
+metadata:
+  name: demo
+  namespace: pgc-demo
+spec:
+  replicas: 3
+  image: pgc/postgres-patroni:16
+  storageSize: 1Gi
+  patroni:
+    ttl: 20
+    loopWait: 10
+    retryTimeout: 10
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgc-operator
+  namespace: pgc-system
+  labels:
+    app.kubernetes.io/name: pgc-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pgc-operator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pgc-operator
+    spec:
+      serviceAccountName: pgc-operator
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: manager
+          image: pgc/operator:dev
+          imagePullPolicy: IfNotPresent
+          args:
+            - --metrics-bind-address=:8080
+            - --health-probe-bind-address=:8081
+          ports:
+            - name: metrics
+              containerPort: 8080
+            - name: probes
+              containerPort: 8081
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true

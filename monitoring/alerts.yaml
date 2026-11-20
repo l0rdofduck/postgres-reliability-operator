@@ -1,0 +1,44 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pgc-alerts
+  namespace: pgc-system
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: pgc.rules
+      rules:
+        - alert: PgcClusterNoLeader
+          expr: pgc_leader_is_healthy == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "PostgreSQL cluster {{ $labels.cluster }} has no leader"
+            description: >-
+              Cluster {{ $labels.cluster }} in namespace {{ $labels.namespace }}
+              has been without an elected leader for more than one minute.
+              Runbook: check Patroni logs of every pod and the DCS endpoints.
+
+        - alert: PgcReplicasOutOfSync
+          expr: pgc_replicas_in_sync < 2
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "PostgreSQL cluster {{ $labels.cluster }} has fewer than two in-sync replicas"
+            description: >-
+              Only {{ $value }} replicas report zero replication lag. Check
+              pg_stat_replication and the WAL shipping path.
+
+        - alert: PgcSlowFailover
+          expr: pgc_failover_duration_seconds > 30
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Slow failover in cluster {{ $labels.cluster }}"
+            description: >-
+              The last observed failover window was {{ $value }}s, which is
+              above the 30s SLO. Review Patroni TTL and loop_wait settings.
